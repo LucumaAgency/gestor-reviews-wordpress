@@ -1,3 +1,4 @@
+<?php
 /**
  * Plugin Name: Reviews Slider
  * Plugin URI: https://tusitio.com
@@ -55,7 +56,7 @@ function rs_reviews_slider_shortcode() {
     ?>
     <div class="reviews-slider">
         <?php
-        $query = new WP_Query(array('post_type' => 'reviews', 'posts_per_page' => 10));
+        $query = new WP_Query(array('post_type' => 'reviews', 'posts_per_page' => 5));
         while ($query->have_posts()): $query->the_post();
             $stars = get_post_meta(get_the_ID(), '_rs_stars', true);
         ?>
@@ -71,30 +72,20 @@ function rs_reviews_slider_shortcode() {
     <script>
         jQuery(document).ready(function($) {
             $('.reviews-slider').slick({
-                slidesToShow: 5, // 5 en PC
+                slidesToShow: $(window).width() > 768 ? 3 : 1,
                 slidesToScroll: 1,
                 autoplay: true,
                 autoplaySpeed: 3000,
-                dots: true,
+                dots: false,
                 arrows: true,
                 prevArrow: '<button class="slick-prev">&#10094;</button>',
                 nextArrow: '<button class="slick-next">&#10095;</button>',
                 responsive: [
                     {
-                        breakpoint: 1200,
-                        settings: { slidesToShow: 4 }
-                    },
-                    {
-                        breakpoint: 1024,
-                        settings: { slidesToShow: 3 }
-                    },
-                    {
                         breakpoint: 768,
-                        settings: { slidesToShow: 2 }
-                    },
-                    {
-                        breakpoint: 480,
-                        settings: { slidesToShow: 1 }
+                        settings: {
+                            slidesToShow: 1
+                        }
                     }
                 ]
             });
@@ -105,7 +96,7 @@ function rs_reviews_slider_shortcode() {
             max-width: 100%;
             margin: auto;
             display: flex;
-            gap: 10px;
+            gap: 5px;
             justify-content: center;
             align-items: center;
         }
@@ -115,12 +106,11 @@ function rs_reviews_slider_shortcode() {
             padding: 10px;
             box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 250px;
+            width: 280px;
             height: 210px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            overflow: hidden;
+            justify-content: center;
         }
         .review-name {
             font-size: 16px;
@@ -135,9 +125,6 @@ function rs_reviews_slider_shortcode() {
         .review-text {
             font-size: 14px;
             color: #555;
-            max-height: 110px; /* Ajuste para asegurar espacio para el título y estrellas */
-            overflow-y: auto;
-            padding-right: 5px;
         }
         .slick-prev, .slick-next {
             background: none;
